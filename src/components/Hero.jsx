@@ -63,14 +63,9 @@ export default function Hero() {
 
       tl.from(overlayRef.current, { opacity: 1, duration: 0.6 })
         .from(
-          ".hero-tag",
-          { y: -30, opacity: 0, duration: 0.7, ease: "back.out(1.5)" },
-          0.1
-        )
-        .from(
           ".hero-title-1",
           { y: 80, opacity: 0, duration: 0.9, ease: "power4.out" },
-          0.2
+          0.1
         )
         .from(
           ".hero-title-2",
@@ -133,7 +128,7 @@ export default function Hero() {
       style={{
         background:
           "radial-gradient(ellipse at 50% 60%, #9E1015 0%, #700B0F 50%, #200709 100%)",
-        paddingTop: "calc(80px + 6rem)",
+        paddingTop: "calc(80px + 2.5rem)",
       }}
     >
       {/* Subtle texture overlay */}
@@ -157,12 +152,6 @@ export default function Hero() {
         ref={titleRef}
         className="relative z-10 text-center max-w-5xl mx-auto flex flex-col items-center"
       >
-        <div className="hero-tag mb-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#F7C843]/40 bg-[#17130F]/40 backdrop-blur-sm">
-          <span className="w-2 h-2 rounded-full bg-[#F7C843] animate-pulse" />
-          <span className="font-body text-[#F7C843] text-xs md:text-sm tracking-[0.35em] uppercase font-semibold">
-            KISSAN PRESENTS
-          </span>
-        </div>
 
         <div className="overflow-hidden">
           <h1

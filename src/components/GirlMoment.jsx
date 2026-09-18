@@ -83,15 +83,11 @@ export default function GirlMoment() {
               YOUR SNACKS.
             </h2>
             <h2
-              className="font-display text-[#F7C843] leading-none mb-6"
+              className="font-display text-[#F7C843] leading-none"
               style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}
             >
               YOUR WAY.
             </h2>
-            <p className="font-body text-[#FFF5DF]/80 text-lg max-w-lg leading-relaxed mx-auto">
-              Whether dipping, spreading, or grilling, turn chips, wraps, and
-              toasts into an effortless gourmet street-food feast in seconds.
-            </p>
           </motion.div>
         </div>
       </div>

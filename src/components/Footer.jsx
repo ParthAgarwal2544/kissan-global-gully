@@ -5,8 +5,7 @@ const footerLinks = [
   { label: "About", href: "#about" },
   { label: "Global Gully", href: "#global-gully" },
   { label: "Products", href: "#products" },
-  { label: "Our Story", href: "#rooted" },
-  { label: "Contact", href: "#founders" },
+  { label: "The Team", href: "#founders" },
 ];
 
 export default function Footer() {

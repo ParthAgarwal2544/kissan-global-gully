@@ -1,340 +1,260 @@
 "use client";
-import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 import { products } from "@/data/products";
 
-gsap.registerPlugin(ScrollTrigger);
-
-function FloatingProduct({ product, isActive }) {
+function ProductJar({ product }) {
   return (
     <motion.div
-      key={product.id}
-      initial={{ scale: 0.65, rotate: 10, opacity: 0, y: 60 }}
-      animate={
-        isActive
-          ? { scale: 1, rotate: -3, opacity: 1, y: 0 }
-          : { scale: 0.65, rotate: 10, opacity: 0, y: 60 }
-      }
-      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-      className="relative"
+      initial={{ opacity: 0, y: 40, scale: 0.9 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="relative flex items-center justify-center py-6 select-none w-full"
     >
-      {isActive && (
-        <motion.div
-          animate={{
-            y: [0, -12, 0],
-            rotate: [-3, -1, -3],
-          }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        >
-          {/* Shadow */}
-          <motion.div
-            animate={{ scaleX: [1, 0.92, 1], opacity: [0.5, 0.3, 0.5] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute bottom-[-20px] left-1/2 -translate-x-1/2 w-3/4 h-6 rounded-full blur-xl"
-            style={{ background: "rgba(0,0,0,0.4)" }}
-          />
+      <motion.div
+        animate={{
+          y: [0, -14, 0],
+          rotate: [-2, 1.5, -2],
+        }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+        className="relative"
+      >
+        {/* Soft shadow */}
+        <div
+          className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-4/5 h-8 rounded-full blur-xl pointer-events-none"
+          style={{ background: "rgba(0,0,0,0.45)" }}
+        />
+        <div className="w-[65vw] sm:w-[320px] md:w-[360px] lg:w-[410px] max-w-[450px]">
           <Image
             src={product.image}
             alt={product.name}
-            width={420}
-            height={420}
-            className="object-contain relative z-10"
+            width={450}
+            height={450}
+            className="object-contain w-full h-auto pointer-events-none"
             style={{
-              filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.35))",
-              maxWidth: "min(380px, 55vw)",
-              width: "100%",
-              height: "auto",
+              filter: "drop-shadow(0 25px 45px rgba(0,0,0,0.4))",
             }}
             priority
           />
-        </motion.div>
-      )}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function ProductInfo({ product, isEven }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: isEven ? -40 : 40 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+      className="flex flex-col justify-center text-center lg:text-left py-6"
+    >
+      {/* Region & Location Badge */}
+      <div className="mb-5 flex items-center gap-3.5 justify-center lg:justify-start">
+        <div
+          className="px-4 py-1.5 rounded-full font-body text-xs font-bold tracking-widest uppercase inline-flex items-center gap-2 shadow-md"
+          style={{
+            background: product.accentColor,
+            color: "#17130F",
+          }}
+        >
+          <span>{product.spiceElement}</span>
+          <span>{product.region} India</span>
+        </div>
+        <span
+          className="font-body text-xs font-semibold tracking-[0.25em] uppercase opacity-75"
+          style={{ color: product.textColor }}
+        >
+          {product.location}
+        </span>
+      </div>
+
+      {/* Product Name */}
+      <h3
+        className="font-display leading-none mb-6"
+        style={{
+          fontSize: "clamp(2.75rem, 5.5vw, 5rem)",
+          color: product.textColor,
+        }}
+      >
+        {product.name.toUpperCase()}
+      </h3>
+
+      {/* Description */}
+      <p
+        className="font-body text-base sm:text-lg leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0 opacity-90 font-light"
+        style={{ color: product.textColor }}
+      >
+        {product.description}
+      </p>
+
+      {/* Specs bar: Price, Weight, Region */}
+      <div className="flex items-center gap-8 mb-4 justify-center lg:justify-start">
+        <div>
+          <p
+            className="font-display text-4xl sm:text-5xl"
+            style={{ color: product.accentColor }}
+          >
+            {product.price}
+          </p>
+          <p
+            className="font-body text-xs uppercase tracking-widest opacity-70 mt-1"
+            style={{ color: product.textColor }}
+          >
+            Net Wt: {product.weight}
+          </p>
+        </div>
+
+        <div
+          className="h-12 w-px opacity-30"
+          style={{ background: product.textColor }}
+        />
+
+        <div>
+          <p
+            className="font-body font-bold text-base sm:text-lg"
+            style={{ color: product.textColor }}
+          >
+            {product.location}
+          </p>
+          <p
+            className="font-body text-xs uppercase tracking-widest opacity-70 mt-1"
+            style={{ color: product.textColor }}
+          >
+            Origin Field
+          </p>
+        </div>
+      </div>
     </motion.div>
   );
 }
 
 export default function ProductShowcase() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const sectionRef = useRef(null);
-  const containerRef = useRef(null);
-
-  const goNext = useCallback(() => {
-    setActiveIndex((i) => Math.min(i + 1, products.length - 1));
-  }, []);
-
-  const goPrev = useCallback(() => {
-    setActiveIndex((i) => Math.max(i - 1, 0));
-  }, []);
-
-  // Keyboard nav
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.key === "ArrowRight" || e.key === "ArrowDown") goNext();
-      if (e.key === "ArrowLeft" || e.key === "ArrowUp") goPrev();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [goNext, goPrev]);
-
-  const product = products[activeIndex];
-
   return (
-    <section
-      ref={sectionRef}
-      id="products"
-      className="relative overflow-hidden"
-    >
-      {/* Section label */}
-      <div
-        className="relative py-12 text-center"
-        style={{ background: "#17130F" }}
+    <div id="products" className="relative">
+      {/* Intro Header Section with full-bleed food background */}
+      <section
+        className="relative text-center overflow-hidden flex items-center justify-center"
+        style={{
+          minHeight: "55vh",
+          paddingTop: "6rem",
+          paddingBottom: "6rem",
+          background: "#17130F",
+        }}
       >
-        <span className="font-body text-[#F7C843] text-xs tracking-[0.4em] uppercase font-semibold">
-          The Products
-        </span>
-        <h2
-          className="font-display text-[#FFF5DF] mt-3"
-          style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)", lineHeight: 0.95 }}
-        >
-          FOUR CREATIONS.
-          <br />
-          <span style={{ WebkitTextStroke: "2px #E32127", color: "transparent" }}>
-            FOUR REGIONS.
-          </span>
-        </h2>
-      </div>
-
-      {/* Product scene */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={product.id}
-          ref={containerRef}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="relative min-h-screen flex items-center"
-          style={{ background: product.bgColor }}
-        >
-          {/* Background abstract shapes */}
-          <motion.div
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.08 }}
-            transition={{ duration: 1 }}
-            className="absolute top-[-10%] right-[-5%] w-[60vw] h-[60vw] rounded-full pointer-events-none"
-            style={{ background: product.accentColor }}
+        {/* Full-bleed background image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/rooted-in-the-soil-food.jpeg"
+            alt="Farm-fresh street food ingredients"
+            fill
+            className="object-cover object-center scale-105"
+            sizes="100vw"
+            priority
           />
-          <motion.div
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.05 }}
-            transition={{ duration: 1.2, delay: 0.1 }}
-            className="absolute bottom-[-10%] left-[-5%] w-[40vw] h-[40vw] rounded-full pointer-events-none"
-            style={{ background: product.textColor }}
-          />
+        </div>
 
-          {/* Decorative spice label */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 0.15, x: 0 }}
-            transition={{ duration: 1 }}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -rotate-90 pointer-events-none"
+        {/* Cinematic gradient overlay for crisp text readability */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(23,19,15,0.82) 0%, rgba(23,19,15,0.55) 45%, rgba(23,19,15,0.85) 100%)",
+          }}
+        />
+
+        <div className="section-container relative z-10 py-12">
+          <h2
+            className="font-display text-[#FFF5DF] leading-tight"
+            style={{
+              fontSize: "clamp(3rem, 7.5vw, 6.5rem)",
+              textShadow: "0 4px 25px rgba(0,0,0,0.85)",
+            }}
           >
+            FOUR CREATIONS.{" "}
             <span
-              className="font-display text-[12vw] font-bold"
-              style={{ color: product.textColor, letterSpacing: "0.1em" }}
+              style={{
+                WebkitTextStroke: "2px #F7C843",
+                color: "transparent",
+                filter: "drop-shadow(0 2px 12px rgba(247,200,67,0.35))",
+              }}
+            >
+              FOUR REGIONS.
+            </span>
+          </h2>
+          <p
+            className="font-body text-[#FFF5DF]/85 text-xs sm:text-sm tracking-[0.3em] uppercase mt-5 font-semibold"
+            style={{ textShadow: "0 2px 10px rgba(0,0,0,0.8)" }}
+          >
+            Scroll through each regional creation
+          </p>
+        </div>
+      </section>
+
+      {/* 4 Individual Product Pages / Sections */}
+      {products.map((product, index) => {
+        const isEven = index % 2 === 0;
+
+        return (
+          <section
+            key={product.id}
+            id={`product-${product.id}`}
+            className="relative overflow-hidden flex items-center"
+            style={{
+              background: product.bgColor,
+              minHeight: "90vh",
+              paddingTop: "5rem",
+              paddingBottom: "5rem",
+            }}
+          >
+            {/* Giant watermark background region name */}
+            <div
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none select-none opacity-10 font-display text-[16vw] font-bold whitespace-nowrap"
+              style={{ color: product.textColor }}
             >
               {product.region.toUpperCase()}
-            </span>
-          </motion.div>
+            </div>
 
-          <div className="section-container py-20 w-full relative z-10">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Product image */}
-              <div className="flex items-center justify-center order-2 lg:order-1">
-                <FloatingProduct product={product} isActive={true} />
-              </div>
+            {/* Subtle ambient light gradient */}
+            <div
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70vw] h-[60vh] rounded-full blur-[140px] pointer-events-none opacity-15"
+              style={{ background: product.accentColor }}
+            />
 
-              {/* Product info */}
-              <div className="order-1 lg:order-2 text-center lg:text-left">
-                {/* Region & Navigation Dots */}
-                <motion.div
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="mb-6 flex items-center gap-4 justify-center lg:justify-start"
-                >
-                  <div
-                    className="px-4 py-1.5 rounded-full font-body text-xs font-bold tracking-widest uppercase flex items-center gap-2"
-                    style={{
-                      background: product.accentColor,
-                      color: "#17130F",
-                    }}
-                  >
-                    <span>{product.spiceElement}</span>
-                    <span>{product.region} India</span>
-                  </div>
-                  <div className="flex gap-1.5">
-                    {products.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setActiveIndex(i)}
-                        className="rounded-full transition-all duration-300"
-                        style={{
-                          width: i === activeIndex ? 24 : 8,
-                          height: 8,
-                          background:
-                            i === activeIndex
-                              ? product.accentColor
-                              : "rgba(255,255,255,0.3)",
-                        }}
-                      />
-                    ))}
-                  </div>
-                </motion.div>
-
-                {/* Region */}
-                <motion.p
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="font-body text-sm font-bold tracking-[0.3em] uppercase mb-3"
-                  style={{ color: product.accentColor }}
-                >
-                  {product.region} · {product.location}
-                </motion.p>
-
-                {/* Product name */}
-                <motion.h3
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.2 }}
-                  className="font-display mb-6"
-                  style={{
-                    fontSize: "clamp(2.5rem, 6vw, 5.5rem)",
-                    lineHeight: 0.95,
-                    color: product.textColor,
-                  }}
-                >
-                  {product.name.toUpperCase()}
-                </motion.h3>
-
-                {/* Description */}
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.35 }}
-                  className="font-body text-lg leading-relaxed mb-8"
-                  style={{ color: `${product.textColor}CC` }}
-                >
-                  {product.description}
-                </motion.p>
-
-                {/* Price + Weight */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.45 }}
-                  className="flex items-center gap-6 mb-10 justify-center lg:justify-start"
-                >
-                  <div>
-                    <p
-                      className="font-display text-4xl"
-                      style={{ color: product.accentColor }}
-                    >
-                      {product.price}
-                    </p>
-                    <p
-                      className="font-body text-sm opacity-70"
-                      style={{ color: product.textColor }}
-                    >
-                      {product.weight}
-                    </p>
-                  </div>
-                  <div
-                    className="h-12 w-px opacity-30"
-                    style={{ background: product.textColor }}
-                  />
-                  <div>
-                    <p
-                      className="font-body text-xs tracking-widest uppercase opacity-70"
-                      style={{ color: product.textColor }}
-                    >
-                      Region
-                    </p>
-                    <p
-                      className="font-body font-bold text-sm"
-                      style={{ color: product.textColor }}
-                    >
-                      {product.location}
-                    </p>
-                  </div>
-                </motion.div>
-
-                {/* Navigation */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                  className="flex items-center gap-4 justify-center lg:justify-start"
-                >
-                  <button
-                    onClick={goPrev}
-                    disabled={activeIndex === 0}
-                    className="w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all duration-300 disabled:opacity-30 hover:scale-110"
-                    style={{
-                      borderColor: product.textColor,
-                      color: product.textColor,
-                    }}
-                    aria-label="Previous product"
-                  >
-                    ←
-                  </button>
-                  <button
-                    onClick={goNext}
-                    disabled={activeIndex === products.length - 1}
-                    className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 disabled:opacity-30 hover:scale-110 font-bold"
-                    style={{
-                      background: product.accentColor,
-                      color: "#17130F",
-                    }}
-                    aria-label="Next product"
-                  >
-                    →
-                  </button>
-                  <span
-                    className="font-body text-sm font-semibold tracking-widest ml-2"
-                    style={{ color: `${product.textColor}80` }}
-                  >
-                    {activeIndex + 1} / {products.length}
-                  </span>
-                </motion.div>
+            {/* Content Container */}
+            <div className="section-container relative z-10 w-full">
+              <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+                {/* Alternating layout for variety on desktop */}
+                {isEven ? (
+                  <>
+                    <div className="order-1 lg:order-1">
+                      <ProductJar product={product} />
+                    </div>
+                    <div className="order-2 lg:order-2">
+                      <ProductInfo product={product} isEven={isEven} />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="order-2 lg:order-1">
+                      <ProductInfo product={product} isEven={isEven} />
+                    </div>
+                    <div className="order-1 lg:order-2">
+                      <ProductJar product={product} />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
-          </div>
 
-          {/* Bottom nav dots for mobile */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 lg:hidden">
-            {products.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveIndex(i)}
-                className="rounded-full transition-all duration-300"
-                style={{
-                  width: i === activeIndex ? 28 : 10,
-                  height: 10,
-                  background:
-                    i === activeIndex
-                      ? product.accentColor
-                      : "rgba(255,255,255,0.3)",
-                }}
-              />
-            ))}
-          </div>
-        </motion.div>
-      </AnimatePresence>
-    </section>
+            {/* Clean dividing line at the bottom of each product slide */}
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+          </section>
+        );
+      })}
+    </div>
   );
 }

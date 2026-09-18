@@ -2,16 +2,16 @@ export const founders = [
   {
     id: 1,
     name: "Priyanshi Agarwal",
-    image: "/images/member-01.jpeg",
+    image: "/images/founder-01-white.jpeg",
   },
   {
     id: 2,
     name: "Danyeshka DCruz",
-    image: "/images/member-02.jpeg",
+    image: "/images/founder-02-white.jpeg",
   },
   {
     id: 3,
     name: "Pranav Raj Yadav",
-    image: "/images/member-03.jpeg",
+    image: "/images/founder-03-white.jpeg",
   },
 ];

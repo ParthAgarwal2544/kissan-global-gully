@@ -79,8 +79,8 @@ export default function Founders() {
               whileHover={{ y: -8 }}
               className="group relative flex flex-col bg-[#211B15] border border-white/10 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:border-[#E32127]/50"
             >
-              {/* Image container with centered crop */}
-              <div className="relative w-full aspect-[3/4] overflow-hidden bg-[#2D251E]">
+              {/* Image container with white studio background */}
+              <div className="relative w-full aspect-[3/4] overflow-hidden bg-white border-b border-white/10">
                 <Image
                   src={founder.image}
                   alt={founder.name}
@@ -88,9 +88,6 @@ export default function Founders() {
                   className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
-
-                {/* Subtle gradient vignette */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#211B15] via-transparent to-black/30 pointer-events-none" />
               </div>
 
               {/* Founder Details Box */}
