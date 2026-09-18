@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+  --color-tomato: #E32127;
+  --color-tomato-deep: #B51218;
+  --color-cream: #FFF5DF;
+  --color-golden: #F7C843;
+  --color-gully-green: #4F8F32;
+  --color-brown: #17130F;
+  --color-white: #FFFFFF;
+
+  --font-family-display: 'Anton', sans-serif;
+  --font-family-body: 'Manrope', sans-serif;
+}
+
+:root {
+  --background: #FFF5DF;
+  --foreground: #17130F;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Manrope', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent layout shift during GSAP */
+.gsap-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Product image white background removal */
+.product-img-multiply {
+  mix-blend-mode: multiply;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #17130F;
+}
+::-webkit-scrollbar-thumb {
+  background: #E32127;
+  border-radius: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Font display utility */
+.font-display {
+  font-family: 'Anton', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.font-body {
+  font-family: 'Manrope', sans-serif;
+}
+
+/* Guaranteed centered container — used across all sections */
+.section-container {
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+@media (min-width: 768px) {
+  .section-container {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
